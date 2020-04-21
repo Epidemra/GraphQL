@@ -10,12 +10,11 @@ let firstInit = false;
 
 let App = () => {
 
-	let [ carInfo, setUserInfo] = useState({isAuth : localStorage.getItem("token") != null, nick : localStorage.getItem("nick"), token : localStorage.getItem("token")});
 
 	// Data
 	let carsData = [];
 
-	if (firstInit !== true && carInfo.isAuth){
+	if (firstInit !== true){
 		let requestBody = {
 			query: graphqlQueries.FETCH_CARS
 		};
@@ -153,35 +152,8 @@ let App = () => {
 		setCurrentcar({ id: car.id, mark: car.mark, model: car.model, year: car.year })
 	}
 
-	let qw = (x) => {
-		localStorage.setItem("nick", x.nick);
-		localStorage.setItem("token", x.token);
-		setUserInfo(x);
-	}
-
-	let OnLogOut = () => {
-		localStorage.removeItem("nick");
-		localStorage.removeItem("token");
-		firstInit = false;
-		setcars([]);
-		setUserInfo({isAuth : false, nick : "", token : ""});
-	}
-
 	return (
 		<div className="container">	
-			
-
-			{
-				carInfo.isAuth ? 
-					(<div>
-						Hello, {carInfo.nick}
-						<br></br>
-						<button onClick={OnLogOut}> LogOut </button>
-					</div>
-					)
-						: 
-					<Sample handle={qw}/>
-			}
 			<h1>Cars CRUD App</h1>
 			<div className="flex-row">
 				<div className="flex-large">
